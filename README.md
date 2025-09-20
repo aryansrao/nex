@@ -14,11 +14,16 @@ Build:
 
 ```bash
 cargo build --release
-# nex — terminal session recorder
+```
+Installing:
+
+```bash
+cargo install --path .
+```
 
 nex records interactive terminal sessions into a portable `.nex` archive. It can:
 
-- Record a local interactive shell to a `.nex` file (`nex start` / `nex stop`).
+- Record a local interactive shell to a `.nex` file (`nex start` / `exit, nex stop`).
 - Replay a `.nex` (`nex play <file>`).
 - Export recorded sessions to CSV or JSON (`nex csv <file>`, `nex json <file>`).
 - Serve a shared shell over TCP for collaborative sessions (`nex serve <port>`).
@@ -28,43 +33,52 @@ This project is a small Rust prototype. It uses a PTY-backed shell and records r
 
 ## Quickstart
 
-Build:
+Installing:
 
 ```bash
-cargo build --release
+cargo install --path .
 ```
 
 Record locally (default timestamped filename):
 
 ```bash
-./target/release/nex start
-# exit the spawned shell to finalize and save recording-<timestamp>.nex
+nex start
 ```
 
 Replay:
 
 ```bash
-./target/release/nex play recording-<timestamp>.nex
+nex play recording.nex
 ```
 
 CSV / JSON export:
 
 ```bash
-./target/release/nex csv recording-<timestamp>.nex --out out.csv
-./target/release/nex json recording-<timestamp>.nex --out out.json
+nex csv recording.nex --out out.csv
+nex json recording.nex --out out.json
 ```
 
 Collaborative session (host):
 
 ```bash
-./target/release/nex serve 3000           # silent by default
-./target/release/nex serve 3000 --verbose # show connect/exits
+nex serve 3000           # silent by default
+nex serve 3000 --verbose # show connect/exits
 ```
 
 Collaborative session (client):
 
 ```bash
-./target/release/nex catch <host-ip> 3000 --out mysession.nex
+nex catch <host-ip> 3000 --out mysession.nex
+```
+```bash
+nex serve 3000           # silent by default
+nex serve 3000 --verbose # show connect/exits
+```
+
+Collaborative session (client):
+
+```bash
+nex catch <host-ip> 3000 --out mysession.nex
 ```
 
 
