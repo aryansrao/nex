@@ -1,0 +1,28 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Built binary
+/nex
+
+# Temporary recording
+/.nex_recording.tmp
+*.nex
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Logs
+*.log
+
+# macOS
+*.DS_Store
+
+# Other
+.env
+node_modules/
