@@ -48,6 +48,9 @@ enum Commands {
         /// Show startup and client connection messages (disabled by default)
         #[arg(short, long)]
         verbose: bool,
+        /// Serve a simple web UI (HTTP + WebSocket) on the same port
+        #[arg(long)]
+        web: bool,
     },
     /// Connect to a collaborative session server
     Catch {
@@ -73,7 +76,7 @@ fn main() -> Result<()> {
         } => recorder::play(file, show_commands),
         Commands::Csv { file, out } => recorder::export_csv(file, out),
         Commands::Json { file, out } => recorder::export_json(file, out),
-        Commands::Serve { port, verbose } => recorder::serve(port, verbose),
+    Commands::Serve { port, verbose, web } => recorder::serve(port, verbose, web),
         Commands::Catch { host, port, out } => recorder::catch(host, port, out),
     }
 }

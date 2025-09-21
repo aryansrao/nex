@@ -2,11 +2,16 @@
 
 This project contains a Rust CLI `nex` that records terminal sessions into `.nex` files.
 
-Commands (MVP):
+Commands:
 - `nex start` — start recording the current shell session
 - `nex stop` — stop recording and finalize the `.nex` file
 - `nex inspect <file.nex>` — view metadata
 - `nex play <file.nex>` — replay recorded session (TBD)
+- `nex csv <file.nex> --out <file.csv>` — export to CSV
+- `nex json <file.nex> --out <file.json>` — export to JSON
+- `nex serve <port> [--verbose]` — host a collaborative session
+- `nex catch <host> <port> --out <file.nex>` — join a collaborative session and save
+- `nex serve <port> --web` — host a collaborative session with web UI (TBD)
 
 This scaffold implements a minimal MVP for start/stop using a PTY-based approach in Rust.
 
@@ -80,7 +85,11 @@ Collaborative session (client):
 ```bash
 nex catch <host-ip> 3000 --out mysession.nex
 ```
+Collaborative session (web UI):
 
+```bash
+nex serve 3000 --web
+```
 
 ## Recording format
 
