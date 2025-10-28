@@ -22,6 +22,9 @@
     <meta name="msapplication-TileImage" content="logonex.png">
     <meta name="theme-color" content="#faf8f3">
 
+    <!-- ensure social crawlers have an absolute HTTPS image URL -->
+    <link rel="image_src" href="https://nex-terminal.netlify.app/logonex.png">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nex-terminal.netlify.app">
@@ -29,7 +32,12 @@
     <meta property="og:title" content="Nex - Modern Terminal Recorder & Real-Time Session Sharing Tool">
     <meta property="og:description"
         content="Record, replay, and share terminal sessions with Nex. Open-source Rust CLI tool for developers featuring collaborative sessions, CSV/JSON export, and PTY recording. Perfect for DevOps, debugging, and documentation.">
-    <meta property="og:image" content="logonex.png">
+    <meta property="og:image" content="https://nex-terminal.netlify.app/logonex.png">
+    <meta property="og:image:secure_url" content="https://nex-terminal.netlify.app/logonex.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Nex logo">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter Card -->
@@ -38,7 +46,8 @@
     <meta name="twitter:title" content="Nex - Terminal Recorder & CLI Collaboration Tool">
     <meta name="twitter:description"
         content="Open-source terminal recorder built in Rust. Record, replay, and share shell sessions with real-time collaboration and export to CSV/JSON.">
-    <meta name="twitter:image" content="logonex.png">
+    <meta name="twitter:image" content="https://nex-terminal.netlify.app/logonex.png">
+    <meta name="twitter:image:alt" content="Nex logo">
 
     <!-- Structured Data / JSON-LD -->
     <script type="application/ld+json">
@@ -1187,7 +1196,7 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
                             rel="noopener noreferrer">Metadata</a> Extraction:</strong> Shell integration provides rich
                     command metadata beyond raw bytes including command text and arguments, execution timestamps and
                     duration, <a href="https://en.wikipedia.org/wiki/Working_directory" class="tech-link"
-                        target="_blank" rel="noopener noreferrer">working directory</a> context, and <a
+ target="_blank" rel="noopener noreferrer">working directory</a> context, and <a
                         href="https://en.wikipedia.org/wiki/Exit_status" class="tech-link" target="_blank"
                         rel="noopener noreferrer">exit codes</a> for success/failure tracking.</p>
 
