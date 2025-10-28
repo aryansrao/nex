@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Enhanced SEO Meta Tags -->
+    <title>Nex - Terminal Recorder, Session Replay & CLI Collaboration Tool | Open Source</title>
+    <meta name="description"
+        content="Nex is a powerful open-source terminal recorder built in Rust. Record shell sessions, replay commands with timing, collaborate in real-time, and export to CSV/JSON. Perfect for DevOps, debugging, and documentation.">
+    <meta name="keywords"
+        content="terminal recorder, shell recording tool, command line recorder, PTY recorder, terminal session replay, collaborative terminal, real-time terminal sharing, terminal to CSV, terminal to JSON, Rust CLI tool, DevOps tools, shell session capture, terminal export, command replay, pseudo-terminal, terminal collaboration, developer tools, CLI recorder, shell history, terminal logging, session recording software, terminal screencasting, command line documentation, terminal audit trail, shell debugging tool">
+    <meta name="author" content="Nex Project">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://github.com/aryansrao/nex">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/aryansrao/nex">
+    <meta property="og:site_name" content="Nex">
+    <meta property="og:title" content="Nex - Modern Terminal Recorder & Real-Time Session Sharing Tool">
+    <meta property="og:description"
+        content="Record, replay, and share terminal sessions with Nex. Open-source Rust CLI tool for developers featuring collaborative sessions, CSV/JSON export, and PTY recording. Perfect for DevOps, debugging, and documentation.">
+    <meta property="og:image" content="logonex.png">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://github.com/aryansrao/nex">
+    <meta name="twitter:title" content="Nex - Terminal Recorder & CLI Collaboration Tool">
+    <meta name="twitter:description"
+        content="Open-source terminal recorder built in Rust. Record, replay, and share shell sessions with real-time collaboration and export to CSV/JSON.">
+    <meta name="twitter:image" content="logonex.png">
+
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Nex",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows",
+      "description": "Nex is a powerful terminal recorder and sharing tool built with Rust. Record shell sessions, replay commands with accurate timing, collaborate in real-time, and export terminal data to CSV or JSON formats.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "programmingLanguage": "Rust",
+      "url": "https://github.com/aryansrao/nex",
+      "softwareVersion": "1.0",
+      "author": {
+        "@type": "Organization",
+        "name": "Nex Project"
+      },
+      "featureList": [
+        "Terminal session recording",
+        "Session replay with timing",
+        "Real-time collaboration",
+        "CSV export",
+        "JSON export",
+        "PTY-based capture",
+        "Web interface",
+        "Command lifecycle tracking"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Nex - Terminal Recorder & Sharing Tool",
+      "description": "Record, replay, and share terminal sessions with Nex, a powerful Rust-based CLI tool for developers",
+      "url": "https://github.com/aryansrao/nex",
+      "mainEntity": {
+        "@type": "SoftwareSourceCode",
+        "codeRepository": "https://github.com/aryansrao/nex",
+        "programmingLanguage": "Rust",
+        "runtimePlatform": "CLI",
+        "targetProduct": {
+          "@type": "SoftwareApplication",
+          "name": "Nex",
+          "applicationCategory": "DeveloperApplication"
+        }
+      }
+    }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c2416;
+            --secondary: #f5f1e8;
+            --accent: #d4a574;
+            --text: #2c2416;
+            --light: #faf8f3;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Custom Scrollbar */
+        body::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: linear-gradient(to right, var(--light) 0%, var(--secondary) 50%, var(--light) 100%);
+            border-left: 1px solid rgba(212, 165, 116, 0.2);
+            box-shadow: inset 0 0 6px rgba(44, 36, 22, 0.1);
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent) 0%, var(--primary) 100%);
+            border-radius: 10px;
+            border: 3px solid var(--light);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(44, 36, 22, 0.2);
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border: 2px solid var(--light);
+            box-shadow: 0 4px 12px rgba(44, 36, 22, 0.3);
+        }
+
+        body::-webkit-scrollbar-thumb:active {
+            background: var(--primary);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Firefox Scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--secondary);
+        }
+
+        /* Scroll to Top Button */
+        #scrollToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1001;
+        }
+
+        #scrollToTop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #scrollToTop:hover {
+            background: #1a1510;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        #scrollToTop:active {
+            transform: translateY(0);
+        }
+
+        #scrollToTop svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--light);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Bottom Blur Bar (clean frosted-glass variant) */
+        #bottomBlur {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            /* subtle translucent tint + smooth gradient for a clean look */
+            background: linear-gradient(180deg,
+                rgba(255,255,255,0.06) 0%,
+                rgba(255,255,255,0.04) 35%,
+                rgba(255,255,255,0.02) 60%,
+                transparent 100%);
+            /* stronger, cleaner blur and slight saturation for glass effect */
+            backdrop-filter: blur(10px) saturate(120%);
+            -webkit-backdrop-filter: blur(10px) saturate(120%);
+            pointer-events: none;
+            z-index: 1000;
+            /* soft fade to transparent so page content doesn't get abruptly cut */
+            mask-image: linear-gradient(to top, black 0%, black 8%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, black 0%, black 8%, transparent 100%);
+            /* subtle separator and elevation to make it feel "clean" not opaque white */
+            border-top: 1px solid rgba(44,36,22,0.04);
+            box-shadow: 0 -8px 24px rgba(44,36,22,0.06);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 4rem 0 1.5rem 0;
+            color: var(--primary);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem 0;
+            color: var(--primary);
+        }
+
+        p {
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            color: #4a3f2f;
+            line-height: 1.8;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #5a4a35;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: underline;
+            text-decoration-color: var(--accent);
+            text-decoration-thickness: 2px;
+            transition: all 0.3s;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        .tech-link {
+            color: #5a4a35;
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent);
+            transition: all 0.2s;
+        }
+
+        .tech-link:hover {
+            color: var(--accent);
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+        }
+
+        .button-group {
+            margin: 3rem 0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--light);
+            padding: 0.9rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+        }
+
+        .button:hover {
+            background: transparent;
+            border: 2px solid var(--primary);
+            border-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .button-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .button-secondary:hover {
+            background: var(--secondary);
+            border-color: var(--accent);
+            color: var(--primary);
+        }
+
+        code {
+            background: var(--secondary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        pre {
+            background: var(--primary);
+            color: var(--light);
+            padding: 2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: transparent;
+            color: var(--light);
+            padding: 0;
+        }
+
+        .command-block {
+            background: var(--secondary);
+            padding: 2.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-radius: 20px;
+        }
+
+        .command-item {
+            margin-bottom: 2.5rem;
+        }
+
+        .command-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .command-name {
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .command-desc {
+            font-size: 1.05rem;
+            color: #5a4a35;
+            line-height: 1.7;
+        }
+
+        article {
+            margin: 3rem 0;
+        }
+
+        section {
+            margin: 2rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #5a4a35;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            #scrollToTop {
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #scrollToTop svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            body::-webkit-scrollbar {
+                width: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Bottom Blur Bar -->
+    <div id="bottomBlur"></div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" aria-label="Scroll to top">
+        <svg viewBox="0 0 24 24">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <main class="container">
+        <header>
+            <h1>Terminal Recorder & Shell Session Capture Tool</h1>
+            <p class="subtitle">Nex is an <a href="https://en.wikipedia.org/wiki/Open-source_software" class="tech-link"
+                    target="_blank" rel="noopener noreferrer">open-source</a> terminal recorder and real-time
+                collaboration tool built with <a href="https://www.rust-lang.org/" class="tech-link" target="_blank"
+                    rel="noopener noreferrer">Rust</a>. Record <a
+                    href="https://en.wikipedia.org/wiki/Command-line_interface" class="tech-link" target="_blank"
+                    rel="noopener noreferrer">command-line</a> sessions with <a
+                    href="https://en.wikipedia.org/wiki/Pseudoterminal" class="tech-link" target="_blank"
+                    rel="noopener noreferrer">PTY</a> accuracy, replay them with precise timing, collaborate in
+                real-time across networks, and export terminal data to <a
+                    href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link" target="_blank"
+                    rel="noopener noreferrer">CSV</a> or <a href="https://en.wikipedia.org/wiki/JSON" class="tech-link"
+                    target="_blank" rel="noopener noreferrer">JSON</a> formats. Perfect for <a
+                    href="https://en.wikipedia.org/wiki/DevOps" class="tech-link" target="_blank"
+                    rel="noopener noreferrer">DevOps</a> automation, debugging workflows, documentation, and team
+                collaboration.</p>
+
+            <div class="button-group">
+                <a href="https://github.com/aryansrao/nex" class="button" rel="noopener noreferrer"
+                    aria-label="View nex on GitHub">View on GitHub</a>
+                <a href="#installation" class="button button-secondary"
+                    aria-label="Jump to installation instructions">Get Started</a>
+            </div>
+        </header>
+
+        <article>
+            <section>
+                <h2>What is nex?</h2>
+                <p>Nex is a comprehensive terminal recording and session management solution designed for developers, <a
+                        href="https://en.wikipedia.org/wiki/DevOps" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">DevOps engineers</a>, and <a
+                        href="https://en.wikipedia.org/wiki/System_administrator" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">system administrators</a> who need to capture, share, and analyze
+                    their command-line workflows. Whether you're documenting a complex deployment procedure, debugging a
+                    production issue with your team in real-time, or creating educational content about command-line
+                    tools and <a href="https://en.wikipedia.org/wiki/Shell_script" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">shell scripting</a>, nex provides the infrastructure to record every
+                    detail of your terminal session with complete fidelity using <a
+                        href="https://en.wikipedia.org/wiki/Pseudoterminal" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">pseudo-terminal (PTY)</a> technology.</p>
+
+                <p>Built from the ground up in <a href="https://www.rust-lang.org/" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Rust</a> for performance and reliability, nex leverages
+                    pseudo-terminal (PTY) technology to capture authentic interactive <a
+                        href="https://en.wikipedia.org/wiki/Unix_shell" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">shell</a> behavior with zero data loss. This means everything that
+                    appears on your screen—commands, outputs, errors, interactive programs like <a
+                        href="https://en.wikipedia.org/wiki/Vim_(text_editor)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">vim</a> or <a href="https://en.wikipedia.org/wiki/Top_(software)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">top</a>, <a
+                        href="https://en.wikipedia.org/wiki/ANSI_escape_code" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">ANSI color codes</a>, and precise timing information—is recorded
+                    exactly as it happens. The result is a portable .nex archive file that can be replayed
+                    frame-by-frame, analyzed for performance metrics, or shared with team members who need to see
+                    exactly what you did and what happened during the session.</p>
+
+                <p>Unlike simple script recorders, <a href="https://en.wikipedia.org/wiki/Log_file" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">log files</a>, or basic <a
+                        href="https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">stdout</a> redirection, nex understands the complete
+                    structure of your shell sessions. Through intelligent integration with shell hooks for <a
+                        href="https://en.wikipedia.org/wiki/Bash_(Unix_shell)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">bash</a>, <a href="https://en.wikipedia.org/wiki/Z_shell"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">zsh</a>, and <a
+                        href="https://en.wikipedia.org/wiki/Fish_(Unix_shell)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">fish</a>, nex captures not just raw terminal bytes but also structured
+                    <a href="https://en.wikipedia.org/wiki/Metadata" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">metadata</a> about command execution lifecycle, including what
+                    commands were run, when they started and finished, what directory they executed in, and their <a
+                        href="https://en.wikipedia.org/wiki/Exit_status" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">exit codes</a>. This dual-layer approach gives you both the raw
+                    terminal experience for authentic replay and structured data for advanced analysis, performance
+                    monitoring, and export to business intelligence tools.</p>
+            </section>
+
+            <section>
+                <h2>Core Capabilities and Features</h2>
+
+                <h3>Terminal Session Recording and High-Fidelity Replay</h3>
+                <p>The fundamental feature of nex is its ability to record complete terminal sessions into portable,
+                    self-contained .nex archive files. When you start a recording session with the
+                    <code>nex start</code> command, nex spawns your preferred shell (bash, zsh, fish, or any configured
+                    shell) within a <a href="https://en.wikipedia.org/wiki/Pseudoterminal" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">pseudo-terminal</a> environment and captures every
+                    single byte of input and output with millisecond-precision <a
+                        href="https://en.wikipedia.org/wiki/Timestamp" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">timestamps</a>. This includes not just the visible text you see on
+                    screen, but also <a
+                        href="https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_(Control_Sequence_Introducer)_sequences"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">terminal control sequences (CSI
+                        codes)</a>, <a href="https://en.wikipedia.org/wiki/ANSI_escape_code" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">ANSI color codes</a> and formatting, cursor movements
+                    and positioning, and timing information that preserves the exact rhythm and pacing of the original
+                    interactive session.</p>
+
+                <p>The replay functionality powered by the <code>nex play</code> command lets you watch recorded
+                    sessions exactly as they happened in real-time. Commands appear at the same pace they were
+                    originally executed, outputs stream in with authentic timing that preserves the feeling of the
+                    original session, and interactive programs behave just as they did during recording. This makes
+                    recorded sessions invaluable for creating technical tutorials and screencasts, reviewing debugging
+                    processes and troubleshooting steps, demonstrating complex workflows to team members who weren't
+                    present for the original session, and creating audit trails for compliance and security purposes.
+                </p>
+
+                <p>The recording system is architected to be lightweight and completely unobtrusive to your workflow.
+                    There's minimal performance overhead (typically less than 1% <a
+                        href="https://en.wikipedia.org/wiki/Central_processing_unit" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CPU</a> usage), so you can leave recording running during intensive
+                    tasks, long-running builds, or production deployments without worrying about impact on execution
+                    speed, <a href="https://en.wikipedia.org/wiki/Computer_memory" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">memory</a> consumption, or system resources. Recording sessions can
+                    run for hours or even days, capturing extensive workflows, multi-step deployments, or debugging
+                    marathons without any degradation in recording quality, data loss, or system performance impact.</p>
+
+                <h3>Real-Time Collaborative Terminal Sessions and Screen Sharing</h3>
+                <p>nex extends far beyond local recording with powerful collaborative features that enable real-time
+                    terminal sharing across local networks and the internet. The <code>nex serve</code> command
+                    transforms your terminal into a shared workspace that multiple users can connect to simultaneously
+                    over <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">TCP/IP</a>. This is invaluable for <a
+                        href="https://en.wikipedia.org/wiki/Pair_programming" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">pair programming</a> sessions where you want a colleague to observe
+                    your coding workflow, remote debugging scenarios where you need to demonstrate a problem to your
+                    distributed team, training and onboarding situations where multiple people need to follow along with
+                    a live demonstration, or <a href="https://en.wikipedia.org/wiki/Code_review" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">code review</a> sessions at the command line.</p>
+
+                <p>Remote clients connect using the <code>nex catch</code> command, which not only displays the shared
+                    terminal in real-time with low <a href="https://en.wikipedia.org/wiki/Latency_(engineering)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">latency</a> but automatically
+                    records the entire collaborative session locally to a .nex file. This means all participants get
+                    both the live interactive experience and a permanent local record they can review later at their own
+                    pace, share with other team members who couldn't attend, or use as reference material for
+                    documentation and <a href="https://en.wikipedia.org/wiki/Runbook" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">runbooks</a>. The collaborative architecture is optimized for low
+                    latency and maintains responsive feel despite operating over network connections, even on slower
+                    connections or high-latency links.</p>
+
+                <p>For broader access scenarios like company-wide demonstrations, client presentations, or training
+                    webinars, nex offers a <a href="https://en.wikipedia.org/wiki/Web_browser" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">web-based interface</a> option activated with the
+                    <code>--web</code> flag. This makes terminal sessions accessible through any modern web browser
+                    without requiring participants to install nex, configure <a
+                        href="https://en.wikipedia.org/wiki/Secure_Shell" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">SSH</a>, or have command-line expertise. It's perfect for sharing
+                    terminal sessions with stakeholders, clients who need to see deployment processes, or large
+                    audiences during conference presentations and live demonstrations.</p>
+
+                <h3>Data Export, Analysis, and Integration Capabilities</h3>
+                <p>Terminal sessions contain valuable operational data that often needs to be processed, analyzed
+                    statistically, or integrated into other monitoring and logging systems. nex provides robust export
+                    capabilities through the <code>nex csv</code> and <code>nex json</code> commands that transform
+                    recorded terminal sessions into industry-standard data formats. <a
+                        href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CSV</a> export produces tabular data with timestamps and event types
+                    that's immediately suitable for spreadsheet analysis in <a
+                        href="https://en.wikipedia.org/wiki/Microsoft_Excel" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Excel</a> or <a href="https://en.wikipedia.org/wiki/Google_Sheets"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Google Sheets</a>, statistical
+                    processing in <a href="https://en.wikipedia.org/wiki/R_(programming_language)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">R</a> or <a href="https://pandas.pydata.org/"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Python pandas</a>, <a
+                        href="https://en.wikipedia.org/wiki/Time_series" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">time-series analysis</a>, or import into data visualization tools like
+                    <a href="https://en.wikipedia.org/wiki/Tableau_Software" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Tableau</a> or <a href="https://en.wikipedia.org/wiki/Grafana"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Grafana</a>.</p>
+
+                <p><a href="https://en.wikipedia.org/wiki/JSON" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">JSON</a> export provides a structured, machine-readable format with
+                    full session metadata that can be consumed by custom scripts and automation tools, integrated into
+                    <a href="https://en.wikipedia.org/wiki/CI/CD" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CI/CD pipelines</a> for build monitoring, fed into centralized logging
+                    systems like <a href="https://en.wikipedia.org/wiki/Elasticsearch" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Elasticsearch</a> or <a href="https://en.wikipedia.org/wiki/Splunk"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Splunk</a>, or processed by
+                    monitoring and alerting systems like <a href="https://en.wikipedia.org/wiki/Prometheus_(software)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Prometheus</a>. The export
+                    functionality preserves all the rich contextual detail of your sessions, including
+                    nanosecond-precision timestamps, event types and classifications, command metadata including working
+                    directory and environment, output data with full fidelity, and command execution durations for
+                    performance analysis.</p>
+
+                <p>This enables sophisticated analysis workflows and automation use cases like measuring command
+                    execution times to identify performance <a
+                        href="https://en.wikipedia.org/wiki/Bottleneck_(software)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">bottlenecks</a> in deployment scripts, tracking which commands are
+                    used most frequently in production environments to optimize tooling, generating detailed <a
+                        href="https://en.wikipedia.org/wiki/Audit_trail" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">audit trails</a> for compliance requirements (<a
+                        href="https://en.wikipedia.org/wiki/Service_Organization_Control" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">SOC 2</a>, <a
+                        href="https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">HIPAA</a>, <a
+                        href="https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">PCI-DSS</a>), analyzing error
+                    patterns across multiple debugging sessions to identify systemic issues, and creating dashboards
+                    that visualize terminal activity patterns across your organization. Because the underlying .nex
+                    format is based on open standards (<a href="https://en.wikipedia.org/wiki/ZIP_(file_format)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">ZIP archive</a> and JSON), you're
+                    never locked into proprietary formats or vendor-specific tools.</p>
+            </section>
+
+            <section id="installation">
+                <h2>Installation Guide - How to Install nex Terminal Recorder</h2>
+                <p>Getting nex running on your <a href="https://en.wikipedia.org/wiki/Linux" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">Linux</a>, <a
+                        href="https://en.wikipedia.org/wiki/MacOS" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">macOS</a>, or <a
+                        href="https://en.wikipedia.org/wiki/Microsoft_Windows" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Windows</a> system requires the <a href="https://www.rust-lang.org/"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Rust programming language</a>
+                    toolchain, which provides the <a href="https://doc.rust-lang.org/cargo/" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">Cargo package manager</a> and build tools necessary
+                    for compiling Rust applications. If you don't already have Rust installed on your machine, visit <a
+                        href="https://rustup.rs" rel="noopener noreferrer">rustup.rs</a> and follow the simple
+                    one-command installation process that works across all major operating systems. The Rust
+                    installation typically completes in just a few minutes and includes <a
+                        href="https://doc.rust-lang.org/rustc/what-is-rustc.html" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">rustc</a> (the compiler), cargo (package manager), and all necessary
+                    development tools.</p>
+
+                <p>Once you have Rust and Cargo available in your <a
+                        href="https://en.wikipedia.org/wiki/PATH_(variable)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">PATH</a>, you can build nex from source code hosted on <a
+                        href="https://en.wikipedia.org/wiki/GitHub" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">GitHub</a>. Clone the nex repository using <a
+                        href="https://en.wikipedia.org/wiki/Git" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">git</a> and navigate to the project directory. The Cargo build process
+                    is straightforward, handles all Rust dependencies automatically through <a
+                        href="https://doc.rust-lang.org/cargo/reference/manifest.html" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Cargo.toml</a>, and produces an optimized production-ready <a
+                        href="https://en.wikipedia.org/wiki/Executable" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">binary</a>.</p>
+
+                <pre><code>git clone https://github.com/aryansrao/nex && cd nex</code></pre>
+                <pre><code>cargo build --release</code></pre>
+
+                <p>For system-wide installation that makes the nex command available from any directory in your
+                    terminal, use Cargo's install command. This compiles the project with maximum optimizations enabled
+                    (--release mode) and places the resulting binary in your Cargo bin directory, which is typically
+                    located at <code>~/.cargo/bin</code> on <a href="https://en.wikipedia.org/wiki/Unix-like"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Unix-like systems</a> and should
+                    already be in your <a href="https://en.wikipedia.org/wiki/PATH_(variable)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">PATH environment variable</a> after standard Rust
+                    installation.</p>
+
+                <pre><code>cargo install --path .</code></pre>
+
+                <p>After installation completes, verify everything is working correctly by running nex with the help
+                    flag to display usage information. You should see the complete list of available commands, options,
+                    and usage examples. If the command isn't found, ensure your Cargo bin directory is properly
+                    configured in your PATH environment variable. You can add it permanently by including the
+                    appropriate export statement in your shell configuration file like <code>.bashrc</code> for <a
+                        href="https://en.wikipedia.org/wiki/Bash_(Unix_shell)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">bash</a>, <code>.zshrc</code> for <a
+                        href="https://en.wikipedia.org/wiki/Z_shell" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">zsh</a>, or <code>config.fish</code> for <a
+                        href="https://en.wikipedia.org/wiki/Fish_(Unix_shell)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">fish shell</a>.</p>
+
+                <pre><code>nex --help</code></pre>
+            </section>
+
+            <section>
+                <h2>Complete nex Command Reference and CLI Usage</h2>
+
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex start - Begin Terminal Recording</div>
+                        <div class="command-desc">Begin recording your current shell session with full <a
+                                href="https://en.wikipedia.org/wiki/Pseudoterminal" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">PTY</a> capture. This command spawns a new interactive shell
+                            within a pseudo-terminal environment and starts capturing all terminal activity including
+                            keyboard input, command output, <a href="https://en.wikipedia.org/wiki/ANSI_escape_code"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">ANSI escape sequences</a>,
+                            and precise command metadata with <a href="https://en.wikipedia.org/wiki/Timestamp"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">timestamps</a>. The
+                            recording continues seamlessly until you exit the shell normally or explicitly stop it with
+                            <code>nex stop</code>. By default, recordings are automatically saved with <a
+                                href="https://en.wikipedia.org/wiki/ISO_8601" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">ISO 8601</a> timestamps in the filename for easy organization,
+                            but you can specify custom filenames for specific use cases like project names or ticket
+                            numbers.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex stop - Finalize Recording Session</div>
+                        <div class="command-desc">Finalize and save the current active recording session to disk. This
+                            command gracefully stops the recording process, closes the pseudo-terminal cleanly, flushes
+                            all <a href="https://en.wikipedia.org/wiki/Data_buffer" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">buffers</a> to ensure no data loss, and writes all captured
+                            data to a self-contained .nex archive file. The resulting file is a complete, portable
+                            recording that can be replayed on any system with nex installed, inspected for metadata and
+                            statistics, or exported to CSV/JSON formats for analysis in external tools.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex inspect &lt;file.nex&gt; - View Session Metadata</div>
+                        <div class="command-desc">View detailed <a href="https://en.wikipedia.org/wiki/Metadata"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">metadata</a> and statistics
+                            about a recorded session without replaying it or loading the full session data. This command
+                            displays comprehensive information extracted from the session manifest including total
+                            session duration, creation timestamp and date, shell type and version used, environment
+                            details like working directory and <a href="https://en.wikipedia.org/wiki/Hostname"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">hostname</a>, total event
+                            counts broken down by type, and file size information. This is useful for quickly organizing
+                            and understanding your library of recorded sessions, finding specific sessions by date or
+                            duration, or verifying session integrity before sharing.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex play &lt;file.nex&gt; - Replay Terminal Session</div>
+                        <div class="command-desc">Replay a recorded terminal session with frame-accurate timing
+                            reproduction. The session is reproduced in your terminal exactly as it was originally
+                            recorded, with all outputs, colors, and formatting appearing at their original pace and
+                            rhythm, preserving the authentic feel of the live session. Interactive programs like <a
+                                href="https://en.wikipedia.org/wiki/Text_editor" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">text editors</a> are replayed accurately. This command is
+                            perfect for reviewing past work and debugging sessions, creating video demonstrations and
+                            tutorials without screen recording software, sharing workflows and procedures with team
+                            members, or auditing what happened during an incident.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex csv &lt;file.nex&gt; --out &lt;file.csv&gt; - Export to CSV Format
+                        </div>
+                        <div class="command-desc">Export a recorded session to industry-standard <a
+                                href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">CSV (Comma-Separated Values)</a> format for
+                            tabular data analysis. The output file includes columns for precise timestamps, event types
+                            and classifications, data payloads and outputs, command metadata where available, and
+                            duration measurements. This format is immediately usable for analysis in spreadsheet
+                            applications like <a href="https://en.wikipedia.org/wiki/Microsoft_Excel" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Microsoft Excel</a> or <a
+                                href="https://en.wikipedia.org/wiki/Google_Sheets" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Google Sheets</a>, data processing scripts written in <a
+                                href="https://pandas.pydata.org/" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Python pandas</a> or <a
+                                href="https://en.wikipedia.org/wiki/R_(programming_language)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">R</a>, integration with <a
+                                href="https://en.wikipedia.org/wiki/Business_intelligence" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">business intelligence</a> tools like <a
+                                href="https://en.wikipedia.org/wiki/Tableau_Software" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Tableau</a> or <a
+                                href="https://en.wikipedia.org/wiki/Microsoft_Power_BI" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Power BI</a>, or <a
+                                href="https://en.wikipedia.org/wiki/Time_series" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">time-series analysis</a> for performance monitoring and
+                            optimization.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex json &lt;file.nex&gt; --out &lt;file.json&gt; - Export to JSON
+                            Format</div>
+                        <div class="command-desc">Export a session to <a href="https://en.wikipedia.org/wiki/JSON"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">JSON (JavaScript Object
+                                Notation)</a> format for programmatic access and system integration. The structured JSON
+                            output preserves all session details including metadata, events, and timing in a
+                            hierarchical format that can be easily parsed by any programming language (<a
+                                href="https://en.wikipedia.org/wiki/Python_(programming_language)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Python</a>, <a
+                                href="https://en.wikipedia.org/wiki/JavaScript" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">JavaScript</a>, <a
+                                href="https://en.wikipedia.org/wiki/Go_(programming_language)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Go</a>, <a
+                                href="https://en.wikipedia.org/wiki/Ruby_(programming_language)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Ruby</a>, <a
+                                href="https://en.wikipedia.org/wiki/Java_(programming_language)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Java</a>), integrated into automated workflows
+                            and <a href="https://en.wikipedia.org/wiki/CI/CD" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">CI/CD pipelines</a>, imported into logging systems like <a
+                                href="https://en.wikipedia.org/wiki/Elasticsearch" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Elasticsearch</a> or <a
+                                href="https://en.wikipedia.org/wiki/Splunk" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Splunk</a>, processed by monitoring tools and alerting
+                            systems, or consumed by custom analysis scripts and dashboards.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex serve &lt;port&gt; [--verbose] - Host Collaborative Session</div>
+                        <div class="command-desc">Host a real-time collaborative terminal session on the specified
+                            network <a href="https://en.wikipedia.org/wiki/Port_(computer_networking)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">port</a> for remote viewing and interaction.
+                            Multiple clients across your network or the internet can connect simultaneously and observe
+                            your terminal in real-time with low <a
+                                href="https://en.wikipedia.org/wiki/Latency_(engineering)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">latency</a>. The optional
+                            <code>--verbose</code> flag enables detailed <a
+                                href="https://en.wikipedia.org/wiki/Log_file" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">logging</a> of connection events, client <a
+                                href="https://en.wikipedia.org/wiki/IP_address" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">IP addresses</a>, and session activity for monitoring and
+                            debugging. This command is perfect for <a
+                                href="https://en.wikipedia.org/wiki/Pair_programming" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">pair programming</a> sessions with remote colleagues,
+                            collaborative debugging sessions across distributed teams, live demonstrations and training
+                            sessions, and <a href="https://en.wikipedia.org/wiki/Code_review" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">code review</a> sessions at the command line
+                            level.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex catch &lt;host&gt; &lt;port&gt; --out &lt;file.nex&gt; - Join
+                            Remote Session</div>
+                        <div class="command-desc">Join an active collaborative session as a remote client and
+                            automatically record the entire shared session locally. Connect to a remote nex serve
+                            instance running anywhere on the network, view the shared terminal in real-time with the
+                            host's activity, and save the complete session to a local .nex file that you can replay
+                            later, share with team members who couldn't join live, analyze for learning purposes, or use
+                            as reference material for documentation and <a href="https://en.wikipedia.org/wiki/Runbook"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">runbooks</a>. The local
+                            recording ensures nothing is lost even if the network connection drops temporarily.</div>
+                    </div>
+                </div>
+                <div class="command-block" role="list">
+                    <div class="command-item" role="listitem">
+                        <div class="command-name">nex serve &lt;port&gt; --web - Host Web-Based Session</div>
+                        <div class="command-desc">Host a collaborative terminal session with a browser-based web
+                            interface accessible via <a href="https://en.wikipedia.org/wiki/HTTP" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">HTTP</a>. This provides zero-install access to
+                            your terminal session through any modern <a href="https://en.wikipedia.org/wiki/Web_browser"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">web browser</a> (<a
+                                href="https://en.wikipedia.org/wiki/Google_Chrome" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Chrome</a>, <a href="https://en.wikipedia.org/wiki/Firefox"
+                                class="tech-link" target="_blank" rel="noopener noreferrer">Firefox</a>, <a
+                                href="https://en.wikipedia.org/wiki/Safari_(web_browser)" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">Safari</a>, <a
+                                href="https://en.wikipedia.org/wiki/Microsoft_Edge" class="tech-link" target="_blank"
+                                rel="noopener noreferrer">Edge</a>) without requiring participants to install nex,
+                            configure <a href="https://en.wikipedia.org/wiki/Secure_Shell" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">SSH keys</a>, or have command-line expertise.
+                            Ideal for presentations to non-technical stakeholders, training sessions with large
+                            audiences, client demonstrations where installation is impractical, and conference talks
+                            where attendees want to follow along in their browsers. The web interface includes <a
+                                href="https://en.wikipedia.org/wiki/Responsive_web_design" class="tech-link"
+                                target="_blank" rel="noopener noreferrer">responsive design</a> for mobile and tablet
+                            viewing.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Technical Architecture - How nex Works Under the Hood</h2>
+                <p>The technical foundation of nex is built on <a href="https://en.wikipedia.org/wiki/Pseudoterminal"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">pseudo-terminal (PTY)</a>
+                    technology, which is the same low-level <a href="https://en.wikipedia.org/wiki/Unix"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Unix</a> mechanism used by <a
+                        href="https://en.wikipedia.org/wiki/Terminal_emulator" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">terminal emulators</a> like <a
+                        href="https://en.wikipedia.org/wiki/GNOME_Terminal" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">GNOME Terminal</a>, <a href="https://en.wikipedia.org/wiki/ITerm2"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">iTerm2</a>, and <a
+                        href="https://en.wikipedia.org/wiki/Windows_Terminal" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Windows Terminal</a> to run shells and interactive programs. When you
+                    start a recording session, nex creates a PTY pair consisting of a master pseudo-terminal device and
+                    a slave pseudo-terminal device. Your shell process (<a
+                        href="https://en.wikipedia.org/wiki/Bash_(Unix_shell)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">bash</a>, <a href="https://en.wikipedia.org/wiki/Z_shell"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">zsh</a>, <a
+                        href="https://en.wikipedia.org/wiki/Fish_(Unix_shell)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">fish</a>, etc.) runs attached to the slave side, believing it's
+                    running in a real terminal, while nex controls the master side, giving it complete <a
+                        href="https://en.wikipedia.org/wiki/Duplex_(telecommunications)#Full_duplex" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">bidirectional</a> visibility into all data flowing
+                    between your shell and the terminal emulator.</p>
+
+                <p>This PTY-based capture approach records terminal sessions with complete fidelity and zero information
+                    loss. Unlike simple output <a href="https://en.wikipedia.org/wiki/Redirection_(computing)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">redirection</a> with
+                    <code>&gt;</code> or <a href="https://en.wikipedia.org/wiki/Tee_(command)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer"><code>tee</code></a>, or basic script recording with
+                    the <a href="https://en.wikipedia.org/wiki/Script_(Unix)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer"><code>script</code> command</a>, PTY capture sees everything exactly
+                    as it appears on your screen in real-time, including interactive program behavior like <a
+                        href="https://en.wikipedia.org/wiki/Vim_(text_editor)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">vim</a>, <a href="https://en.wikipedia.org/wiki/Emacs"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">emacs</a>, <a
+                        href="https://en.wikipedia.org/wiki/Top_(software)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">top</a>, <a href="https://en.wikipedia.org/wiki/Htop"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">htop</a>, <a
+                        href="https://en.wikipedia.org/wiki/Less_(Unix)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">less</a>, and <a href="https://en.wikipedia.org/wiki/Ncurses"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">ncurses</a> applications, terminal
+                    control sequences and <a href="https://en.wikipedia.org/wiki/ANSI_escape_code" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">ANSI escape codes</a> for colors and cursor movement,
+                    raw binary data and non-printable characters, timing information with millisecond precision for
+                    authentic replay, and even terminal resizing events. The captured data is written to an efficient <a
+                        href="https://en.wikipedia.org/wiki/JSON_streaming#Newline-delimited_JSON" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">newline-delimited JSON</a> stream format, with each
+                    line representing a single atomic event—either raw terminal output with precise timestamp or a
+                    structured command lifecycle event with rich metadata.</p>
+
+                <p>Command lifecycle tracking and metadata collection is achieved through intelligent shell hooks that
+                    nex installs in your shell configuration files (<a
+                        href="https://en.wikipedia.org/wiki/Bash_(Unix_shell)#Startup_scripts" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">.bashrc</a>, <a
+                        href="https://en.wikipedia.org/wiki/Z_shell#Startup/Shutdown_files" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">.zshrc</a>, <a
+                        href="https://fishshell.com/docs/current/language.html#configuration" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">config.fish</a>). These hooks emit structured <a
+                        href="https://en.wikipedia.org/wiki/JSON" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">JSON</a> events when commands start executing (<a
+                        href="https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">preexec hook</a>) and when they complete (<a
+                        href="https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">precmd hook</a>), providing valuable metadata like the
+                    full command text and arguments, current <a href="https://en.wikipedia.org/wiki/Working_directory"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">working directory</a> path, command
+                    start timestamp and end timestamp, <a href="https://en.wikipedia.org/wiki/Process_(computing)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">process</a> <a
+                        href="https://en.wikipedia.org/wiki/Exit_status" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">exit code</a> for success/failure tracking, and shell session ID for
+                    correlation. This dual-capture approach gives you both the raw PTY terminal experience for authentic
+                    visual replay and structured command metadata for advanced analysis, searching, filtering, and
+                    export to analytics platforms.</p>
+
+                <p>The .nex file format itself is deliberately simple, open, and based on industry standards to ensure
+                    long-term accessibility. It's a standard <a href="https://en.wikipedia.org/wiki/ZIP_(file_format)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">ZIP archive</a> (compatible with any
+                    zip tool) containing exactly two JSON files with well-defined <a
+                        href="https://en.wikipedia.org/wiki/JSON#JSON_Schema" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">schemas</a>: <code>manifest.json</code> containing session-level
+                    metadata like creation time, duration, shell type, and environment; and <code>session.json</code>
+                    containing the complete event stream in newline-delimited JSON format. This design ensures
+                    portability across platforms, easy inspectability with standard command-line tools like
+                    <code>unzip</code> and <a href="https://en.wikipedia.org/wiki/Jq_(programming_language)"
+                        class="tech-link" target="_blank" rel="noopener noreferrer"><code>jq</code></a>, and long-term
+                    accessibility regardless of future changes to nex itself. You can examine, extract, and process .nex
+                    files with standard tools, integrate them into custom workflows, or archive them with confidence
+                    they'll remain readable for years to come.</p>
+            </section>
+
+            <section>
+                <h2>Real-World Use Cases and Applications for nex</h2>
+                <p>nex solves critical problems that developers, <a href="https://en.wikipedia.org/wiki/DevOps"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">DevOps engineers</a>, <a
+                        href="https://en.wikipedia.org/wiki/Site_reliability_engineering" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">site reliability engineers</a>, and operations teams
+                    face daily in modern <a href="https://en.wikipedia.org/wiki/Software_development" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">software development</a>. When you're working through
+                    a complex debugging session troubleshooting a production <a
+                        href="https://en.wikipedia.org/wiki/Service_outage" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">outage</a>, recording the entire diagnostic process creates a perfect
+                    artifact for <a href="https://en.wikipedia.org/wiki/Postmortem_documentation" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">post-mortem analysis</a> and learning. You can review
+                    exactly what commands you tried, what diagnostic outputs you observed, which log files you examined,
+                    and which approach finally identified and solved the problem. This transforms time-sensitive
+                    debugging sessions into valuable learning opportunities and creates permanent documentation that
+                    helps prevent similar issues in the future, reduces <a
+                        href="https://en.wikipedia.org/wiki/Mean_time_to_recovery" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">mean time to resolution (MTTR)</a>, and builds institutional
+                    knowledge.</p>
+
+                <p>Technical documentation and training materials benefit enormously from authentic terminal recordings
+                    that capture real workflows. Instead of writing lengthy step-by-step instructions that quickly
+                    become outdated with software updates, you can record the actual process once and let people watch
+                    it happen with perfect accuracy. Tutorial creators and technical educators can demonstrate complex
+                    workflows like <a href="https://en.wikipedia.org/wiki/Kubernetes" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Kubernetes</a> deployments, <a
+                        href="https://en.wikipedia.org/wiki/Schema_migration" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">database migrations</a>, or <a
+                        href="https://en.wikipedia.org/wiki/CI/CD" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CI/CD pipeline</a> configurations with complete fidelity. Training
+                    materials become living documents that show exactly how tasks are performed in real production
+                    environments rather than describing them in text that might be misinterpreted or become outdated.
+                    New team members can <a href="https://en.wikipedia.org/wiki/Onboarding" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">onboard</a> faster by watching recorded sessions of
+                    senior engineers performing common tasks.</p>
+
+                <p><a href="https://en.wikipedia.org/wiki/Incident_management" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Incident response</a> and troubleshooting scenarios in production
+                    environments demand accurate, timestamped records of all actions taken and results observed for
+                    compliance and <a href="https://en.wikipedia.org/wiki/Audit" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">audit</a> purposes. Recording your incident response with nex creates
+                    an immutable <a href="https://en.wikipedia.org/wiki/Audit_trail" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">audit trail</a> that helps with post-incident analysis, <a
+                        href="https://en.wikipedia.org/wiki/Root_cause_analysis" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">root cause investigation</a>, and compliance requirements for
+                    standards like <a href="https://en.wikipedia.org/wiki/Service_Organization_Control"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">SOC 2</a>, <a
+                        href="https://en.wikipedia.org/wiki/ISO/IEC_27001" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">ISO 27001</a>, <a
+                        href="https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">HIPAA</a>, and <a
+                        href="https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">PCI-DSS</a>. When working on
+                    production systems during critical outages, having an exact timestamped record of what commands you
+                    executed, what outputs you observed, and what changes you made provides both accountability for
+                    security audits and a reliable reference for creating <a
+                        href="https://en.wikipedia.org/wiki/Runbook" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">runbooks</a>, <a
+                        href="https://en.wikipedia.org/wiki/Standard_operating_procedure" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">standard operating procedures (SOPs)</a>, and
+                    automation scripts that codify best practices.</p>
+
+                <p>Collaborative work and remote team coordination becomes dramatically more effective when you can
+                    share your terminal in real-time across geographic boundaries. <a
+                        href="https://en.wikipedia.org/wiki/Code_review" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Code reviews</a> can happen at the command line level with both
+                    parties seeing the same terminal output and discussing implementation details. Junior developers can
+                    watch senior team members work through complex tasks in real-time, learning not just what commands
+                    to run but how to think about problems, debug issues, and make architectural decisions. Remote teams
+                    spread across multiple time zones can collaborate as effectively as if they were sitting at the same
+                    desk. Customer support teams can record troubleshooting sessions with clients and share them with
+                    engineering teams for deeper investigation without requiring the engineer to directly access
+                    customer systems.</p>
+            </section>
+
+            <section>
+                <h2>Getting Started with nex - Quick Start Tutorial</h2>
+                <p>The simplest way to start using nex for local terminal recording is to run the <code>nex start</code>
+                    command to begin a new recording session. Work in your terminal as you normally would—run commands,
+                    edit files, check logs, deploy applications—and then simply exit the shell when you're done with
+                    your task. The session is automatically saved with an <a
+                        href="https://en.wikipedia.org/wiki/ISO_8601" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">ISO timestamp</a> filename like
+                    <code>recording-2025-10-28T14-30-00.nex</code>. You can then replay it instantly with
+                    <code>nex play</code> to review what you did, or export it to <a
+                        href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CSV</a> or <a href="https://en.wikipedia.org/wiki/JSON"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">JSON</a> for detailed analysis of
+                    command execution times and patterns.</p>
+
+                <pre><code># Start recording a terminal session
+nex start
+
+# Work normally in your terminal
+cd /var/www/myapp
+git pull origin main
+npm install
+npm run build
+sudo systemctl restart nginx
+
+# Exit the shell to save the recording
+exit
+
+# Replay the recorded session
+nex play recording-2025-10-28T14-30-00.nex
+
+# Export session data for analysis
+nex csv recording-2025-10-28T14-30-00.nex --out deployment.csv</code></pre>
+
+                <p>For collaborative scenarios and real-time terminal sharing, one person starts a nex server on a
+                    network <a href="https://en.wikipedia.org/wiki/Port_(computer_networking)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">port</a> using <code>nex serve</code> while remote
+                    team members connect using <code>nex catch</code> from their machines anywhere on the network or
+                    internet. The host sees connection notifications in verbose mode showing when clients join and
+                    disconnect, and clients get both a real-time live view of the shared terminal and an automatic local
+                    recording of the complete session. This makes collaborative debugging sessions, <a
+                        href="https://en.wikipedia.org/wiki/Pair_programming" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">pair programming</a>, and remote training highly productive while
+                    ensuring nothing is lost when the live session ends.</p>
+
+                <pre><code># Host machine - start collaborative session
+nex serve 3000 --verbose
+
+# Client machine - connect to shared session
+nex catch 192.168.1.100 3000 --out shared-session.nex
+
+# Or connect from anywhere on the internet
+nex catch example.com 3000 --out remote-session.nex</code></pre>
+
+                <p>Export capabilities enable you to integrate terminal session data into your broader <a
+                        href="https://en.wikipedia.org/wiki/DevOps" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">DevOps</a> workflows and analytics pipelines. Extract sessions to CSV
+                    format for performance analysis in spreadsheet applications, identifying slow commands that could
+                    benefit from optimization. Export to JSON for feeding into centralized logging systems like <a
+                        href="https://en.wikipedia.org/wiki/Elasticsearch" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Elasticsearch</a>, monitoring dashboards built with <a
+                        href="https://en.wikipedia.org/wiki/Grafana" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Grafana</a>, or custom analysis scripts written in <a
+                        href="https://en.wikipedia.org/wiki/Python_(programming_language)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">Python</a> that track command usage patterns across
+                    your team. The structured export preserves all the detailed metadata and timing information of your
+                    sessions in formats that standard data processing tools can consume.</p>
+
+                <pre><code># Export to CSV for spreadsheet analysis
+nex csv session.nex --out analysis.csv
+
+# Export to JSON for automated processing
+nex json session.nex --out data.json
+
+# Process JSON with jq for custom analysis
+cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
+            </section>
+
+            <section>
+                <h2>Why Choose nex? Key Benefits and Advantages</h2>
+                <p><strong><a href="https://en.wikipedia.org/wiki/Open-source_software" class="tech-link"
+                            target="_blank" rel="noopener noreferrer">Open Source</a> and Free:</strong> nex is
+                    completely open source software released under a permissive <a
+                        href="https://en.wikipedia.org/wiki/Software_license" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">license</a>, meaning you can use it freely in personal projects,
+                    commercial environments, and enterprise deployments without licensing costs or vendor lock-in. The
+                    source code is publicly available on <a href="https://en.wikipedia.org/wiki/GitHub"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">GitHub</a> for transparency,
+                    security auditing, and community contributions.</p>
+
+                <p><strong>High Performance <a href="https://www.rust-lang.org/" class="tech-link" target="_blank"
+                            rel="noopener noreferrer">Rust</a> Implementation:</strong> Built entirely in Rust, nex
+                    offers <a href="https://en.wikipedia.org/wiki/Memory_safety" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">memory safety</a> without <a
+                        href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">garbage collection</a> overhead, minimal <a
+                        href="https://en.wikipedia.org/wiki/Central_processing_unit" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CPU</a> and <a href="https://en.wikipedia.org/wiki/Computer_memory"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">memory</a> footprint during
+                    recording, fast startup times and efficient resource usage, and <a
+                        href="https://en.wikipedia.org/wiki/Cross-platform_software" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">cross-platform</a> compatibility across <a
+                        href="https://en.wikipedia.org/wiki/Linux" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Linux</a>, <a href="https://en.wikipedia.org/wiki/MacOS"
+                        class="tech-link" target="_blank" rel="noopener noreferrer">macOS</a>, and <a
+                        href="https://en.wikipedia.org/wiki/Microsoft_Windows" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">Windows</a> operating systems.</p>
+
+                <p><strong>Complete Fidelity <a href="https://en.wikipedia.org/wiki/Pseudoterminal" class="tech-link"
+                            target="_blank" rel="noopener noreferrer">PTY</a> Recording:</strong> Unlike basic logging
+                    tools, nex captures everything through pseudo-terminal technology including interactive programs, <a
+                        href="https://en.wikipedia.org/wiki/ANSI_escape_code" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">ANSI colors</a> and formatting, precise <a
+                        href="https://en.wikipedia.org/wiki/Timestamp" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">timing</a> information, and terminal resize events for authentic
+                    reproduction.</p>
+
+                <p><strong>Structured <a href="https://en.wikipedia.org/wiki/Metadata" class="tech-link" target="_blank"
+                            rel="noopener noreferrer">Metadata</a> Extraction:</strong> Shell integration provides rich
+                    command metadata beyond raw bytes including command text and arguments, execution timestamps and
+                    duration, <a href="https://en.wikipedia.org/wiki/Working_directory" class="tech-link"
+                        target="_blank" rel="noopener noreferrer">working directory</a> context, and <a
+                        href="https://en.wikipedia.org/wiki/Exit_status" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">exit codes</a> for success/failure tracking.</p>
+
+                <p><strong>Real-Time Collaboration Features:</strong> Share your terminal live with team members across
+                    networks, support multiple simultaneous viewers, provide automatic recording for all participants,
+                    and offer <a href="https://en.wikipedia.org/wiki/Web_browser" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">web interface</a> for browser-based access without installation.</p>
+
+                <p><strong>Flexible Export Formats:</strong> Export session data to <a
+                        href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">CSV</a> for spreadsheet analysis and visualization, <a
+                        href="https://en.wikipedia.org/wiki/JSON" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">JSON</a> for programmatic access and system integration, and open <a
+                        href="https://en.wikipedia.org/wiki/ZIP_(file_format)" class="tech-link" target="_blank" rel="noopener noreferrer">ZIP</a>-based format that never locks you into proprietary tools.</p>
+
+                <p><strong>Production-Ready Reliability:</strong> Minimal performance overhead allows continuous
+                    recording, handles long-running sessions without degradation, provides graceful <a
+                        href="https://en.wikipedia.org/wiki/Exception_handling" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">error handling</a> and recovery, and maintains <a
+                        href="https://en.wikipedia.org/wiki/Data_integrity" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">data integrity</a> even during system issues.</p>
+            </section>
+
+            <div class="button-group">
+                <a href="https://github.com/aryansrao/nex" class="button" rel="noopener noreferrer"
+                    aria-label="View nex repository on GitHub">View on GitHub</a>
+                <a href="https://github.com/aryansrao/nex/issues" class="button button-secondary"
+                    rel="noopener noreferrer" aria-label="Report bugs or request features">Report Issues</a>
+            </div>
+        </article>
+    </main>
+
+    <footer role="contentinfo">
+        <p>This was made by <a href="https://aryansrao.github.io" class="tech-link" target="_blank"
+                rel="noopener noreferrer">Aryan S Rao</a>
+        </p>
+    </footer>
+
+    <script>
+        // Scroll to Top Button
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+    </script>
+</body>
