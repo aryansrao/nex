@@ -1265,7 +1265,7 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
             });
         });
 
-        // Smooth Scrolling Implementation
+
         (function () {
             'use strict';
 
@@ -1280,9 +1280,9 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
                 // Configuration
                 const config = {
                     smoothFactor: 0.07,        // Lower = smoother/slower (0.01-0.15)
-                    touchSensitivity: 1.8,     // Touch scroll multiplier
-                    inertiaMultiplier: 40,     // Momentum after touch release
-                    inertiaDecay: 0.95         // Velocity decay rate (0-1)
+                    touchSensitivity: 0.2,     // Touch scroll multiplier (reduced for mobile)
+                    inertiaMultiplier: 5,     // Momentum after touch release (reduced)
+                    inertiaDecay: 0.8         // Velocity decay rate (0-1, faster decay)
                 };
 
                 // Create wrapper structure
@@ -1300,6 +1300,27 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
                 originalContent.forEach(child => scroller.appendChild(child));
                 container.appendChild(scroller);
                 body.appendChild(container);
+
+                // Add required styles
+                const style = document.createElement('style');
+                style.textContent = `
+      body { overflow: hidden !important; }
+      .smooth-scroll-container { 
+        position: relative; 
+        height: 100vh; 
+        overflow: hidden; 
+      }
+      .smooth-scroll-scroller { 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        width: 100%; 
+        will-change: transform;
+        transform: translateZ(0);
+      }
+    `;
+                document.head.appendChild(style);
+
                 // State variables
                 let targetY = 0;
                 let currentY = 0;
