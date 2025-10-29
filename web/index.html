@@ -221,10 +221,10 @@
             height: 120px;
             /* subtle translucent tint + smooth gradient for a clean look */
             background: linear-gradient(180deg,
-                rgba(255,255,255,0.06) 0%,
-                rgba(255,255,255,0.04) 35%,
-                rgba(255,255,255,0.02) 60%,
-                transparent 100%);
+                    rgba(255, 255, 255, 0.06) 0%,
+                    rgba(255, 255, 255, 0.04) 35%,
+                    rgba(255, 255, 255, 0.02) 60%,
+                    transparent 100%);
             /* stronger, cleaner blur and slight saturation for glass effect */
             backdrop-filter: blur(10px) saturate(120%);
             -webkit-backdrop-filter: blur(10px) saturate(120%);
@@ -234,8 +234,8 @@
             mask-image: linear-gradient(to top, black 0%, black 8%, transparent 100%);
             -webkit-mask-image: linear-gradient(to top, black 0%, black 8%, transparent 100%);
             /* subtle separator and elevation to make it feel "clean" not opaque white */
-            border-top: 1px solid rgba(44,36,22,0.04);
-            box-shadow: 0 -8px 24px rgba(44,36,22,0.06);
+            border-top: 1px solid rgba(44, 36, 22, 0.04);
+            box-shadow: 0 -8px 24px rgba(44, 36, 22, 0.06);
         }
 
         .container {
@@ -531,7 +531,8 @@
                         href="https://en.wikipedia.org/wiki/Exit_status" class="tech-link" target="_blank"
                         rel="noopener noreferrer">exit codes</a>. This dual-layer approach gives you both the raw
                     terminal experience for authentic replay and structured data for advanced analysis, performance
-                    monitoring, and export to business intelligence tools.</p>
+                    monitoring, and export to business intelligence tools.
+                </p>
             </section>
 
             <section>
@@ -552,7 +553,8 @@
                         codes)</a>, <a href="https://en.wikipedia.org/wiki/ANSI_escape_code" class="tech-link"
                         target="_blank" rel="noopener noreferrer">ANSI color codes</a> and formatting, cursor movements
                     and positioning, and timing information that preserves the exact rhythm and pacing of the original
-                    interactive session.</p>
+                    interactive session.
+                </p>
 
                 <p>The replay functionality powered by the <code>nex play</code> command lets you watch recorded
                     sessions exactly as they happened in real-time. Commands appear at the same pace they were
@@ -605,7 +607,8 @@
                         href="https://en.wikipedia.org/wiki/Secure_Shell" class="tech-link" target="_blank"
                         rel="noopener noreferrer">SSH</a>, or have command-line expertise. It's perfect for sharing
                     terminal sessions with stakeholders, clients who need to see deployment processes, or large
-                    audiences during conference presentations and live demonstrations.</p>
+                    audiences during conference presentations and live demonstrations.
+                </p>
 
                 <h3>Data Export, Analysis, and Integration Capabilities</h3>
                 <p>Terminal sessions contain valuable operational data that often needs to be processed, analyzed
@@ -625,7 +628,8 @@
                         rel="noopener noreferrer">time-series analysis</a>, or import into data visualization tools like
                     <a href="https://en.wikipedia.org/wiki/Tableau_Software" class="tech-link" target="_blank"
                         rel="noopener noreferrer">Tableau</a> or <a href="https://en.wikipedia.org/wiki/Grafana"
-                        class="tech-link" target="_blank" rel="noopener noreferrer">Grafana</a>.</p>
+                        class="tech-link" target="_blank" rel="noopener noreferrer">Grafana</a>.
+                </p>
 
                 <p><a href="https://en.wikipedia.org/wiki/JSON" class="tech-link" target="_blank"
                         rel="noopener noreferrer">JSON</a> export provides a structured, machine-readable format with
@@ -640,7 +644,8 @@
                     functionality preserves all the rich contextual detail of your sessions, including
                     nanosecond-precision timestamps, event types and classifications, command metadata including working
                     directory and environment, output data with full fidelity, and command execution durations for
-                    performance analysis.</p>
+                    performance analysis.
+                </p>
 
                 <p>This enables sophisticated analysis workflows and automation use cases like measuring command
                     execution times to identify performance <a
@@ -742,7 +747,8 @@
                                 href="https://en.wikipedia.org/wiki/ISO_8601" class="tech-link" target="_blank"
                                 rel="noopener noreferrer">ISO 8601</a> timestamps in the filename for easy organization,
                             but you can specify custom filenames for specific use cases like project names or ticket
-                            numbers.</div>
+                            numbers.
+                        </div>
                     </div>
                 </div>
                 <div class="command-block" role="list">
@@ -864,7 +870,8 @@
                             collaborative debugging sessions across distributed teams, live demonstrations and training
                             sessions, and <a href="https://en.wikipedia.org/wiki/Code_review" class="tech-link"
                                 target="_blank" rel="noopener noreferrer">code review</a> sessions at the command line
-                            level.</div>
+                            level.
+                        </div>
                     </div>
                 </div>
                 <div class="command-block" role="list">
@@ -957,7 +964,8 @@
                         href="https://en.wikipedia.org/wiki/JSON_streaming#Newline-delimited_JSON" class="tech-link"
                         target="_blank" rel="noopener noreferrer">newline-delimited JSON</a> stream format, with each
                     line representing a single atomic event—either raw terminal output with precise timestamp or a
-                    structured command lifecycle event with rich metadata.</p>
+                    structured command lifecycle event with rich metadata.
+                </p>
 
                 <p>Command lifecycle tracking and metadata collection is achieved through intelligent shell hooks that
                     nex installs in your shell configuration files (<a
@@ -996,7 +1004,8 @@
                         class="tech-link" target="_blank" rel="noopener noreferrer"><code>jq</code></a>, and long-term
                     accessibility regardless of future changes to nex itself. You can examine, extract, and process .nex
                     files with standard tools, integrate them into custom workflows, or archive them with confidence
-                    they'll remain readable for years to come.</p>
+                    they'll remain readable for years to come.
+                </p>
             </section>
 
             <section>
@@ -1088,7 +1097,8 @@
                         href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link" target="_blank"
                         rel="noopener noreferrer">CSV</a> or <a href="https://en.wikipedia.org/wiki/JSON"
                         class="tech-link" target="_blank" rel="noopener noreferrer">JSON</a> for detailed analysis of
-                    command execution times and patterns.</p>
+                    command execution times and patterns.
+                </p>
 
                 <pre><code># Start recording a terminal session
 nex start
@@ -1196,7 +1206,7 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
                             rel="noopener noreferrer">Metadata</a> Extraction:</strong> Shell integration provides rich
                     command metadata beyond raw bytes including command text and arguments, execution timestamps and
                     duration, <a href="https://en.wikipedia.org/wiki/Working_directory" class="tech-link"
- target="_blank" rel="noopener noreferrer">working directory</a> context, and <a
+                        target="_blank" rel="noopener noreferrer">working directory</a> context, and <a
                         href="https://en.wikipedia.org/wiki/Exit_status" class="tech-link" target="_blank"
                         rel="noopener noreferrer">exit codes</a> for success/failure tracking.</p>
 
@@ -1207,11 +1217,11 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
 
                 <p><strong>Flexible Export Formats:</strong> Export session data to <a
                         href="https://en.wikipedia.org/wiki/Comma-separated_values" class="tech-link" target="_blank"
-
                         rel="noopener noreferrer">CSV</a> for spreadsheet analysis and visualization, <a
                         href="https://en.wikipedia.org/wiki/JSON" class="tech-link" target="_blank"
                         rel="noopener noreferrer">JSON</a> for programmatic access and system integration, and open <a
-                        href="https://en.wikipedia.org/wiki/ZIP_(file_format)" class="tech-link" target="_blank" rel="noopener noreferrer">ZIP</a>-based format that never locks you into proprietary tools.</p>
+                        href="https://en.wikipedia.org/wiki/ZIP_(file_format)" class="tech-link" target="_blank"
+                        rel="noopener noreferrer">ZIP</a>-based format that never locks you into proprietary tools.</p>
 
                 <p><strong>Production-Ready Reliability:</strong> Minimal performance overhead allows continuous
                     recording, handles long-running sessions without degradation, provides graceful <a
@@ -1255,6 +1265,154 @@ cat data.json | jq '.events[] | select(.type=="command")'</code></pre>
             });
         });
 
+        // Smooth Scrolling Implementation
+        (function () {
+            'use strict';
+
+            // Wait for DOM to be ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            function init() {
+                // Configuration
+                const config = {
+                    smoothFactor: 0.07,        // Lower = smoother/slower (0.01-0.15)
+                    touchSensitivity: 1.8,     // Touch scroll multiplier
+                    inertiaMultiplier: 40,     // Momentum after touch release
+                    inertiaDecay: 0.95         // Velocity decay rate (0-1)
+                };
+
+                // Create wrapper structure
+                const body = document.body;
+                const originalContent = Array.from(body.children);
+
+                // Create container and scroller divs
+                const container = document.createElement('div');
+                const scroller = document.createElement('div');
+
+                container.className = 'smooth-scroll-container';
+                scroller.className = 'smooth-scroll-scroller';
+
+                // Move all body content into scroller
+                originalContent.forEach(child => scroller.appendChild(child));
+                container.appendChild(scroller);
+                body.appendChild(container);
+                // State variables
+                let targetY = 0;
+                let currentY = 0;
+                let maxScroll = 0;
+
+                // Helper functions
+                const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+                const lerp = (a, b, factor) => a + (b - a) * factor;
+                const round2 = v => Math.round(v * 100) / 100;
+
+                function updateBounds() {
+                    maxScroll = Math.max(0, scroller.scrollHeight - window.innerHeight);
+                    targetY = clamp(targetY, 0, maxScroll);
+                    currentY = clamp(currentY, 0, maxScroll);
+                }
+
+                // Initialize
+                updateBounds();
+
+                // Animation loop
+                function animate() {
+                    currentY = lerp(currentY, targetY, config.smoothFactor);
+                    scroller.style.transform = `translate3d(0, -${round2(currentY)}px, 0)`;
+                    requestAnimationFrame(animate);
+                }
+                requestAnimationFrame(animate);
+
+                // Mouse wheel handler
+                let wheelTimeout;
+                function onWheel(e) {
+                    e.preventDefault();
+                    targetY += e.deltaY;
+                    targetY = clamp(targetY, 0, maxScroll);
+
+                    clearTimeout(wheelTimeout);
+                    wheelTimeout = setTimeout(() => {
+                        // Reserved for additional logic (snap points, etc.)
+                    }, 60);
+                }
+
+                // Touch handlers
+                let isTouchDown = false;
+                let lastTouchY = 0;
+                let touchVelocity = 0;
+                let lastTouchTime = 0;
+
+                function onTouchStart(e) {
+                    isTouchDown = true;
+                    lastTouchY = e.touches[0].clientY;
+                    lastTouchTime = performance.now();
+                    touchVelocity = 0;
+                }
+
+                function onTouchMove(e) {
+                    if (!isTouchDown) return;
+                    e.preventDefault();
+
+                    const y = e.touches[0].clientY;
+                    const delta = lastTouchY - y;
+                    const now = performance.now();
+                    const dt = now - lastTouchTime || 16;
+
+                    touchVelocity = delta / dt * 16;
+                    lastTouchY = y;
+                    lastTouchTime = now;
+
+                    targetY += delta * config.touchSensitivity;
+                    targetY = clamp(targetY, 0, maxScroll);
+                }
+
+                function onTouchEnd() {
+                    isTouchDown = false;
+
+                    // Apply inertia
+                    if (Math.abs(touchVelocity) > 0.2) {
+                        let velocity = touchVelocity * config.inertiaMultiplier;
+
+                        const applyInertia = () => {
+                            velocity *= config.inertiaDecay;
+                            targetY += velocity;
+                            targetY = clamp(targetY, 0, maxScroll);
+
+                            if (Math.abs(velocity) > 0.5) {
+                                requestAnimationFrame(applyInertia);
+                            }
+                        };
+
+                        requestAnimationFrame(applyInertia);
+                    }
+                }
+
+                // Event listeners
+                window.addEventListener('resize', updateBounds);
+                container.addEventListener('wheel', onWheel, { passive: false });
+                container.addEventListener('touchstart', onTouchStart, { passive: true });
+                container.addEventListener('touchmove', onTouchMove, { passive: false });
+                container.addEventListener('touchend', onTouchEnd, { passive: true });
+
+                // Expose API for external control (optional)
+                window.SmoothScroll = {
+                    scrollTo: (y) => {
+                        targetY = clamp(y, 0, maxScroll);
+                    },
+                    getPosition: () => currentY,
+                    updateBounds: updateBounds,
+                    setConfig: (newConfig) => {
+                        Object.assign(config, newConfig);
+                    }
+                };
+            }
+        })();
+
     </script>
 </body>
+
 </html>
