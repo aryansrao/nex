@@ -1,112 +1,57 @@
-# nex - terminal recorder & sharing
+# Nex
 
-This project contains a Rust CLI `nex` that records terminal sessions into `.nex` files.
+Record your terminal, replay it, or stream it live to anyone with a browser. Nex is a Rust tool that captures terminal sessions into a compact `.nex` file, and can share a live terminal across the internet with playback rendered by Xterm.js.
 
-Commands:
-- `nex start` — start recording the current shell session
-- `nex stop` — stop recording and finalize the `.nex` file
-- `nex inspect <file.nex>` — view metadata
-- `nex play <file.nex>` — replay recorded session (TBD)
-- `nex csv <file.nex> --out <file.csv>` — export to CSV
-- `nex json <file.nex> --out <file.json>` — export to JSON
-- `nex serve <port> [--verbose]` — host a collaborative session
-- `nex catch <host> <port> --out <file.nex>` — join a collaborative session and save
-- `nex serve <port> --web` — host a collaborative session with web UI (TBD)
+**Live demo:** <https://nex-terminal.netlify.app>
 
-This scaffold implements a minimal MVP for start/stop using a PTY-based approach in Rust.
+Screen recordings of terminals are the wrong tool: they are enormous, blurry, and you cannot copy text out of them. A terminal session is really just a stream of bytes and timestamps, so that is what Nex stores.
 
-Build:
+## How it works
+
+```mermaid
+flowchart LR
+    T["Your terminal<br/>(PTY)"] --> R["nex recorder<br/>bytes + timestamps"]
+    R --> F[".nex file"]
+    R --> S["Async server<br/>Tokio + Warp"]
+    S -- "WebSocket" --> V["Viewer's browser<br/>Xterm.js"]
+    F --> P["Playback<br/>seek · speed control"]
+    P --> V
+```
+
+Recording wraps your shell in a pseudo-terminal and logs output with timing information. Sharing pipes the same stream over a WebSocket, so a viewer's browser renders your terminal live, as text — selectable, copyable, and a fraction of the size of a video.
+
+## Usage
 
 ```bash
 cargo build --release
-```
-Installing:
 
-```bash
-cargo install --path .
-```
+nex start -o demo.nex          # start recording (default: recording.nex)
+nex stop                       # stop the current recording
+nex play demo.nex              # replay in your terminal (--show-commands for command markers)
+nex inspect demo.nex           # examine a recording's contents
+nex csv demo.nex               # export the session as CSV
+nex json demo.nex              # export the session as JSON
 
-nex records interactive terminal sessions into a portable `.nex` archive. It can:
-
-- Record a local interactive shell to a `.nex` file (`nex start` / `exit, nex stop`).
-- Replay a `.nex` (`nex play <file>`).
-- Export recorded sessions to CSV or JSON (`nex csv <file>`, `nex json <file>`).
-- Serve a shared shell over TCP for collaborative sessions (`nex serve <port>`).
-- Join a shared session as a client and auto-save the session (`nex catch <host> <port>`).
-
-This project is a small Rust prototype. It uses a PTY-backed shell and records raw terminal bytes plus command lifecycle markers (injected via zsh hooks) into a newline-delimited JSON stream inside the `.nex` archive.
-
-## Quickstart
-
-Installing:
-
-```bash
-cargo install --path .
+nex serve 8080 --web           # host a collaborative session with a web UI
+nex catch <host> 8080          # join someone's session from another terminal
 ```
 
-Record locally (default timestamped filename):
+`serve --web` exposes an HTTP + WebSocket interface on the same port, so a viewer needs nothing but a browser; `catch` joins from another terminal. Playback in the browser supports seeking and speed control, which video-based recordings make painful and plain-text logs make impossible.
 
-```bash
-nex start
-```
+## Why not asciinema?
 
-Replay:
+Asciinema is excellent, and Nex is deliberately in its lineage. Building my own taught me the actual mechanics — PTY handling, timing capture, escape-sequence passthrough, async fan-out to multiple viewers — and gave me a self-hostable live-sharing mode with no third-party service in the loop.
 
-```bash
-nex play recording.nex
-```
+## Honest limitations
 
-CSV / JSON export:
+- The `.nex` format is my own; there is no converter to or from asciicast yet
+- Live sharing trusts the link — anyone with the URL can watch; there is no authentication layer at present
+- Interactive input from viewers is intentionally not supported: it is a window, not a remote shell
 
-```bash
-nex csv recording.nex --out out.csv
-nex json recording.nex --out out.json
-```
+## Stack
 
-Collaborative session (host):
+Rust · Tokio · Warp · WebSockets · Xterm.js
 
-```bash
-nex serve 3000           # silent by default
-nex serve 3000 --verbose # show connect/exits
-```
+---
 
-Collaborative session (client):
-
-```bash
-nex catch <host-ip> 3000 --out mysession.nex
-```
-```bash
-nex serve 3000           # silent by default
-nex serve 3000 --verbose # show connect/exits
-```
-
-Collaborative session (client):
-
-```bash
-nex catch <host-ip> 3000 --out mysession.nex
-```
-Collaborative session (web UI):
-
-```bash
-nex serve 3000 --web
-```
-
-## Recording format
-
-A `.nex` file is a ZIP archive containing:
-
-- `manifest.json` — metadata and duration
-- `session.json` — newline-delimited JSON events (raw terminal bytes and command start/end objects)
-
-Raw event example:
-
-```json
-{"t": 0.123, "data": "<base64>"}
-```
-
-Command event example:
-
-```json
-{"type":"command","phase":"start","t": 1234567890.123,"cwd":"/home/user","cmd_b64":"..."}
-```
-
+Built by [Aryan S Rao](https://github.com/aryansrao). Issues and pull requests are welcome.
